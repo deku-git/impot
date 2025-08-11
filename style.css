@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  .card-title {
+    font-size: 1.5rem;
+  }
+  
+  #payNowBtn {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  #payNowBtn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  

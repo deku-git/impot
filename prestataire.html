@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Declaration DC</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="text-center">Declaration DC</h1>
+    <p class="text-center"></p>
+
+    <!-- Formulaire -->
+    <form id="prestataireForm" class="mt-4">
+      <div class="mb-3">
+        <label for="prestataireName" class="form-label">Nom de l'entreprise</label>
+        <input type="text" class="form-control" id="prestataireName" placeholder="" required>
+      </div>
+      <div class="mb-3">
+        <label for="taxId" class="form-label">Numéro d'identification fiscale (NIF)</label>
+        <input type="text" class="form-control" id="taxId" placeholder="" required>
+      </div>
+      <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <textarea class="form-control" id="address" rows="2" placeholder="Adresse complète" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="serviceType" class="form-label">Type DC</label>
+        <select class="form-select" id="serviceType" required>
+          <option value="">Sélectionnez un type de DC</option>
+          <option value="consulting">Consulting</option>
+          <option value="logistics">Logistique</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="other">Autre</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="phone" class="form-label">Téléphone</label>
+        <input type="tel" class="form-control" id="phone" placeholder="Exemple : +261 32 00 123 45" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="Exemple : contact@entreprise.com" required>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Ajouter</button>
+      </div>
+    </form>
+
+    <!-- Tableau des prestataires -->
+    <div class="mt-5">
+      <h2 class="text-center">Liste des Prestataires</h2>
+      <table class="table table-striped mt-3" id="prestatairesTable">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>NIF</th>
+            <th>Adresse</th>
+            <th>Type</th>
+            <th>Téléphone</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Les lignes seront ajoutées ici -->
+        </tbody>
+      </table>
+
+      <div class="text-center mt-4">
+        <button id="saveAll" class="btn btn-success">Enregistrer tout</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Gestion de l'ajout des prestataires
+    document.getElementById('prestataireForm').addEventListener('submit', function (event) {
+      event.preventDefault(); // Empêche le rechargement de la page
+
+      // Récupération des données du formulaire
+      const prestataireName = document.getElementById('prestataireName').value;
+      const taxId = document.getElementById('taxId').value;
+      const address = document.getElementById('address').value;
+      const serviceType = document.getElementById('serviceType').value;
+      const phone = document.getElementById('phone').value;
+      const email = document.getElementById('email').value;
+
+      // Référence du tableau
+      const table = document.getElementById('prestatairesTable').querySelector('tbody');
+
+      // Nouvelle ligne
+      const newRow = table.insertRow();
+      newRow.innerHTML = `
+        <td>${prestataireName}</td>
+        <td>${taxId}</td>
+        <td>${address}</td>
+        <td>${serviceType}</td>
+        <td>${phone}</td>
+        <td>${email}</td>
+        <td>
+          <button class="btn btn-danger btn-sm delete-btn">Supprimer</button>
+        </td>
+      `;
+
+      // Réinitialiser le formulaire
+      document.getElementById('prestataireForm').reset();
+
+      // Ajouter l'événement pour supprimer une ligne
+      const deleteBtn = newRow.querySelector('.delete-btn');
+      deleteBtn.addEventListener('click', function () {
+        table.deleteRow(newRow.rowIndex - 1); // Supprime la ligne
+      });
+    });
+
+    // Gestion du bouton "Enregistrer tout"
+    document.getElementById('saveAll').addEventListener('click', function () {
+      const table = document.getElementById('prestatairesTable');
+      const rows = table.querySelectorAll('tbody tr');
+      const allData = [];
+
+      rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const rowData = {
+          name: cells[0].textContent,
+          nif: cells[1].textContent,
+          address: cells[2].textContent,
+          type: cells[3].textContent,
+          phone: cells[4].textContent,
+          email: cells[5].textContent
+        };
+        allData.push(rowData);
+      });
+
+      console.log("Données enregistrées :", allData);
+      alert("Toutes les données ont été enregistrées avec succès !");
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
